@@ -20,7 +20,7 @@ document.getElementById('viewWorkBtn').addEventListener('click', function() {
     if (button.innerHTML === 'View My Work') {
         button.innerHTML = 'Shuffle Cards';
         
-        // Initial setup - stack cards
+        // Initial setup - stack cards in order (card1 on top)
         cards.forEach((card, index) => {
             // Remove any existing transforms first
             card.style.transform = '';
@@ -33,16 +33,31 @@ document.getElementById('viewWorkBtn').addEventListener('click', function() {
                 card.style.position = 'absolute';
                 card.style.left = '50%';
                 card.style.top = '50%';
+                // Set z-index in reverse order (first card on top)
                 card.style.zIndex = cards.length - index;
                 card.classList.add('stacked');
+                
+                // Show content only for the top card (card1)
+                if (index === 0) {
+                    card.querySelector('.card-content').style.opacity = '1';
+                } else {
+                    card.querySelector('.card-content').style.opacity = '0';
+                }
             }, 50);
         });
         
         // Disable parallax effect
         document.removeEventListener('mousemove', handleParallax);
     } else {
-        // Shuffle animation
+        // Get next card index
+        const nextIndex = (currentCardIndex + 1) % cards.length;
         const currentCard = cards[currentCardIndex];
+        const nextCard = cards[nextIndex];
+        
+        // Show next card content before animation starts
+        nextCard.querySelector('.card-content').style.opacity = '1';
+        nextCard.style.zIndex = cards.length - 1;  // Put next card just below current
+        currentCard.style.zIndex = cards.length;   // Ensure current card is on top for animation
         
         // Animate current card out
         currentCard.style.transform = 'translate(-50%, -150%) rotate(10deg)';
@@ -53,17 +68,18 @@ document.getElementById('viewWorkBtn').addEventListener('click', function() {
             currentCard.style.transform = 'translate(-50%, -50%)';
             currentCard.style.opacity = '1';
             currentCard.style.zIndex = 0;
+            currentCard.querySelector('.card-content').style.opacity = '0';
             
             // Update z-indices of other cards
-            cards.forEach(card => {
-                if (card !== currentCard) {
-                    card.style.zIndex = parseInt(card.style.zIndex) + 1;
+            cards.forEach((card, index) => {
+                if (card !== currentCard && card !== nextCard) {
+                    card.style.zIndex = parseInt(card.style.zIndex) - 1;
                 }
             });
         }, 500);
         
         // Update index for next shuffle
-        currentCardIndex = (currentCardIndex + 1) % cards.length;
+        currentCardIndex = nextIndex;
     }
 });
 
