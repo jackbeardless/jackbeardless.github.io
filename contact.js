@@ -15,7 +15,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     };
 
     // Send email using EmailJS
-    emailjs.send('service_wswabj6', 'template_cqvsf7n', templateParams)
+    emailjs.send('service_wswabj6', 'template_hargfpb', templateParams)
         .then(function() {
             button.innerHTML = 'Message Sent!';
             button.style.backgroundColor = '#27ae60';
