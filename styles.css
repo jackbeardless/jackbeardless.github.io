@@ -67,6 +67,22 @@ nav {
     position: relative;
 }
 
+.hero.expanded-view {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 2rem;
+}
+
+.hero.expanded-view .hero-content {
+    margin-bottom: 3rem;
+}
+
+.hero.expanded-view .cards-decoration {
+    position: static;
+    margin-top: 2rem;
+}
+
 .hero-content {
     max-width: 600px;
 }
@@ -112,33 +128,36 @@ nav {
 /* Decorative Cards */
 .cards-decoration {
     position: relative;
-    width: 300px;
-    height: 400px;
+    width: 200px;
+    height: 300px;
+    margin: 0 auto;
 }
 
 .card {
-    position: absolute;
     width: 200px;
     height: 300px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    transition: transform 0.5s ease;
+    transition: all 0.5s ease;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
-.card1 {
-    transform: rotate(-5deg) translateX(20px);
-    animation: floatCard 4s ease-in-out infinite;
+/* Set initial z-index for cards */
+.card1 { z-index: 3; }
+.card2 { z-index: 2; transform: translateY(10px); }
+.card3 { z-index: 1; transform: translateY(20px); }
+
+/* Card content should be visible on the top card initially */
+.card1 .card-content {
+    opacity: 1;
 }
 
-.card2 {
-    transform: rotate(5deg) translateX(-20px);
-    animation: floatCard 4s ease-in-out infinite 1s;
-}
-
-.card3 {
-    transform: rotate(0deg);
-    animation: floatCard 4s ease-in-out infinite 2s;
+.card2 .card-content,
+.card3 .card-content {
+    opacity: 0;
 }
 
 /* Animations */
@@ -172,5 +191,70 @@ nav {
     
     .title {
         font-size: 3rem;
+    }
+}
+
+/* Card Content Styles */
+.card-content {
+    opacity: 0;
+    padding: 20px;
+    transition: opacity 0.5s ease;
+    text-align: center;
+}
+
+.card.expanded .card-content {
+    opacity: 1;
+}
+
+.card-content h3 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    color: var(--text-color);
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+}
+
+.card-link {
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.card-link:hover {
+    transform: translateY(-2px);
+}
+
+.cards-decoration.expanded {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.card.expanded {
+    position: relative;
+    width: 200px;
+    height: 300px;
+    margin: 0 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .cards-decoration.expanded {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .card.expanded {
+        transform: none !important;
+        margin: 10px 0;
     }
 }
