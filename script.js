@@ -123,3 +123,25 @@ const handleParallax = (e) => {
 };
 
 document.addEventListener('mousemove', handleParallax);
+
+// Mobile menu functionality
+const burgerMenu = document.querySelector('.burger-menu');
+const sidebar = document.querySelector('.sidebar');
+const overlay = document.querySelector('.mobile-menu-overlay');
+
+burgerMenu.addEventListener('click', toggleMenu);
+overlay.addEventListener('click', toggleMenu);
+
+function toggleMenu() {
+    burgerMenu.classList.toggle('active');
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+    document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+}
+
+// Close menu when clicking a link
+document.querySelectorAll('.sidebar-links a').forEach(link => {
+    link.addEventListener('click', () => {
+        toggleMenu();
+    });
+});
