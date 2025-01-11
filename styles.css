@@ -182,15 +182,106 @@ nav {
     .hero {
         flex-direction: column;
         text-align: center;
-        padding: 40px 0;
+        padding: 40px 20px;
+        min-height: 100vh;
+        justify-content: center;
     }
     
-    .cards-decoration {
-        margin-top: 40px;
+    .hero-content {
+        margin-bottom: 40px;
     }
     
     .title {
-        font-size: 3rem;
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+        margin-bottom: 25px;
+    }
+
+    .cards-decoration {
+        width: 100%;
+        max-width: 280px;
+        height: 300px;
+        margin: 0 auto;
+    }
+    
+    .card {
+        width: 200px;
+        height: 300px;
+        margin: 0 auto;
+    }
+    
+    .card-content {
+        padding: 15px;
+    }
+    
+    .card-content h3 {
+        font-size: 1.2rem;
+        margin-bottom: 8px;
+    }
+    
+    .card-content p {
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+    }
+
+    .sidebar {
+        display: block;
+        width: 280px;
+        padding: 60px 20px 20px;
+    }
+    
+    .sidebar-links {
+        margin-top: 30px;
+    }
+    
+    .sidebar-links a {
+        padding: 15px 0;
+        font-size: 1.1rem;
+    }
+
+    .theme-switch-wrapper {
+        position: fixed;
+        top: 20px;
+        right: 70px;
+    }
+
+    .cards-decoration.expanded {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .card.expanded {
+        transform: none !important;
+        margin: 10px auto;
+    }
+    
+    .card.stacked {
+        left: 50%;
+        transform: translate(-50%, -50%) !important;
+    }
+}
+
+/* Additional adjustments for very small screens */
+@media (max-width: 360px) {
+    .title {
+        font-size: 2rem;
+    }
+    
+    .cards-decoration {
+        max-width: 240px;
+    }
+    
+    .card {
+        width: 180px;
+        height: 270px;
+    }
+    
+    .theme-switch-wrapper {
+        right: 60px;
     }
 }
 
