@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jack's Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #0a192f;
+            color: #64ffda;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        #hero-section {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        #hero-section h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            color: #ccd6f6;
+        }
+
+        #typewriter-container {
+            font-family: monospace;
+            font-size: 1.5rem;
+            height: 2em;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            background: transparent;
+            border: 2px solid #64ffda;
+            color: #64ffda;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        .projects-grid {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            min-height: 100vh;
+        }
+
+        .project-card {
+            background: rgba(10, 25, 47, 0.5);
+            border: 1px solid rgba(100, 255, 218, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            border-color: #64ffda;
+            box-shadow: 0 10px 30px -15px rgba(100, 255, 218, 0.3);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            color: #ccd6f6;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .project-title::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: #64ffda;
+            transition: width 0.3s ease;
+        }
+
+        .project-card:hover .project-title::after {
+            width: 100px;
+        }
+
+        .project-description {
+            color: #8892b0;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-tech {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            background: rgba(100, 255, 218, 0.1);
+            color: #64ffda;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-link {
+            color: #64ffda;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s ease;
+        }
+
+        .project-link:hover {
+            color: #ccd6f6;
+        }
+
+        @media (max-width: 768px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+        }
+        
+
+        .project-link svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+
+        .connect-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(10, 25, 47, 0.95);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid #64ffda;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .connect-popup h2 {
+            color: #ccd6f6;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .connect-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .connect-link {
+            padding: 0.75rem 1.5rem;
+            background: transparent;
+            border: 1px solid #64ffda;
+            color: #64ffda;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .connect-link:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: translateX(5px);
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 25, 47, 0.5);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+    <section id="hero-section">
+        <h1>Hi, I'm Jack</h1>
+        <div id="typewriter-container"></div>
+        <a href="#projects-grid" class="cta-button">Take a peek at my work</a>
+        <a href="#" class="cta-button" style="margin-top: 1rem;" onclick="showConnectPopup(event)">Connect with me</a>
+
+        <div class="popup-overlay" id="popupOverlay" onclick="hideConnectPopup()"></div>
+        <div class="connect-popup" id="connectPopup">
+            <h2>Let's Connect!</h2>
+            <div class="connect-links">
+                <a href="https://linkedin.com/in/jackbeardd" target="_blank" class="connect-link">LinkedIn</a>
+                <a href="mailto:jdbeard@proton.me" class="connect-link">Email</a>
+                <a href="https://github.com/jackbeardless" target="_blank" class="connect-link">GitHub</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="projects-grid">
+        <!-- Project 1 -->
+        <article class="project-card">
+            <div class="project-content">
+                <h3 class="project-title">Student Marketplace</h3>
+                <p class="project-description">A student marketplace website, the purpose is to provide students with a safe buying/selling experience.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">HTML</span>
+                    <span class="tech-tag">CSS</span>
+                    <span class="tech-tag">JS</span>
+                    <span class="tech-tag">PHP</span>
+                    <span class="tech-tag">SQL</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link">🔗 Video Demo (coming soon)</a>
+                    <a href="#" class="project-link">📂 GitHub (request access via email)</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Project 2 -->
+        <article class="project-card">
+            <div class="project-content">
+                <h3 class="project-title">Project Title 2</h3>
+                <p class="project-description">Another exciting project that demonstrates different skills and technologies. Shows versatility and problem-solving abilities.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">Vue.js</span>
+                    <span class="tech-tag">Python</span>
+                    <span class="tech-tag">AWS</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link">🔗 Live Demo</a>
+                    <a href="#" class="project-link">📂 GitHub</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- Project 3 -->
+        <article class="project-card">
+            <div class="project-content">
+                <h3 class="project-title">Project Title 3</h3>
+                <p class="project-description">A sophisticated project showcasing advanced techniques and innovative solutions to complex problems.</p>
+                <div class="project-tech">
+                    <span class="tech-tag">TypeScript</span>
+                    <span class="tech-tag">GraphQL</span>
+                    <span class="tech-tag">Docker</span>
+                </div>
+                <div class="project-links">
+                    <a href="#" class="project-link">🔗 Live Demo</a>
+                    <a href="#" class="project-link">📂 GitHub</a>
+                </div>
+            </div>
+        </article>
+    </div>
+
+    <script>
+        // Typewriter effect
+        const codeSnippets = [
+            'print("hello world")',
+            'console.log("hello world")',
+            'System.out.println("hello world")',
+            'cout << "hello world"',
+            'fmt.Println("hello world")',
+            'echo "hello world"'
+        ];
+
+        function typeWriter(text, element, speed = 50) {
+            let i = 0;
+            element.textContent = '';
+            return new Promise(resolve => {
+                function type() {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                        setTimeout(type, speed);
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
+            });
+        }
+
+        function backspace(element, speed = 30) {
+            return new Promise(resolve => {
+                function erase() {
+                    const text = element.textContent;
+                    if (text.length > 0) {
+                        element.textContent = text.slice(0, -1);
+                        setTimeout(erase, speed);
+                    } else {
+                        resolve();
+                    }
+                }
+                erase();
+            });
+        }
+
+        async function animateTypewriter() {
+            const container = document.getElementById('typewriter-container');
+            while (true) {
+                for (const snippet of codeSnippets) {
+                    await typeWriter(snippet, container);
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    await backspace(container);
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
+        }
+
+        // Initialize typewriter animation
+        animateTypewriter();
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        const projects = [
+            {
+                id: 1,
+                name: 'Project 1',
+                description: 'Description of Project 1',
+                x: 50,
+                y: 50
+            },
+            {
+                id: 2,
+                name: 'Project 2',
+                description: 'Description of Project 2',
+                x: 200,
+                y: 150
+            },
+            {
+                id: 3,
+                name: 'Project 3',
+                description: 'Description of Project 3',
+                x: 350,
+                y: 250
+            }
+        ];
+
+        function createProjectNodes() {
+            const container = document.getElementById('mindmap-container');
+            const linesContainer = document.getElementById('lines-container');
+
+            projects.forEach((project, index) => {
+                // Create project node
+                const node = document.createElement('div');
+                node.className = 'project-node';
+                node.style.left = `${project.x}px`;
+                node.style.top = `${project.y}px`;
+
+                // Create project info popup
+                const info = document.createElement('div');
+                info.className = 'project-info';
+                info.innerHTML = `
+                    <h3>${project.name}</h3>
+                    <p>${project.description}</p>
+                `;
+
+                node.appendChild(info);
+                container.appendChild(node);
+
+                // Draw connecting lines
+                if (index > 0) {
+                    const prevProject = projects[index - 1];
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    line.setAttribute('x1', prevProject.x + 6);
+                    line.setAttribute('y1', prevProject.y + 6);
+                    line.setAttribute('x2', project.x + 6);
+                    line.setAttribute('y2', project.y + 6);
+                    line.setAttribute('stroke', '#64ffda');
+                    line.setAttribute('stroke-width', '1');
+                    line.setAttribute('opacity', '0.5');
+                    linesContainer.appendChild(line);
+                }
+
+                // Add hover events
+                node.addEventListener('mouseenter', () => {
+                    info.style.display = 'block';
+                    info.style.left = `${project.x - 144}px`;
+                    info.style.top = `${project.y + 20}px`;
+                });
+
+                node.addEventListener('mouseleave', () => {
+                    info.style.display = 'none';
+                });
+
+                // Add click event
+                node.addEventListener('click', () => {
+                    window.location.href = `./projects/${project.name.toLowerCase().replace(/ /g, '-')}.html`;
+                });
+            });
+        }
+
+        // Initialize the mind map
+        createProjectNodes();
+
+        // Connect popup functionality
+        function showConnectPopup(event) {
+            event.preventDefault();
+            document.getElementById('popupOverlay').style.display = 'block';
+            document.getElementById('connectPopup').style.display = 'block';
+        }
+
+        function hideConnectPopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('connectPopup').style.display = 'none';
+        }
+
+        // Add responsive behavior
+        window.addEventListener('resize', () => {
+            // TODO: Implement responsive layout adjustments
+        });
+    </script>
+</body>
+</html>
