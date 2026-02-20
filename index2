@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jack | Minecraft Plugin Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --text-header: #ffffff;
+            --accent: #2ea043;
+            --accent-hover: #3fb950;
+            --border: #30363d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, .mono {
+            font-family: 'Fira Code', monospace;
+            color: var(--text-header);
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            padding: 80px 0 60px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-prompt {
+            color: var(--accent);
+            margin-right: 10px;
+        }
+
+        h1 { font-size: 2.5rem; margin-bottom: 15px; }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #8b949e;
+            margin-bottom: 30px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: var(--text-main);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .btn i { margin-right: 8px; }
+
+        #projects { padding: 60px 0; }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            margin-left: 20px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 25px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .folder-icon {
+            color: var(--accent);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .project-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: #8b949e;
+        }
+
+        .tech-stack {
+            margin-top: 20px;
+            display: flex;
+            gap: 15px;
+            font-size: 0.8rem;
+            font-family: 'Fira Code', monospace;
+            color: #8b949e;
+        }
+
+        .placeholder-card {
+            border: 1px dashed var(--border);
+            background: transparent;
+            opacity: 0.6;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            font-size: 0.8rem;
+            color: #8b949e;
+            border-top: 1px solid var(--border);
+        }
+
+        .typing-effect {
+            border-right: 3px solid var(--accent);
+            white-space: nowrap;
+            overflow: hidden;
+            animation: blink 0.75s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent) }
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .social-links { flex-direction: column; }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 100%;
+            border: 1px solid var(--border);
+        }
+
+        .close {
+            float: right;
+            cursor: pointer;
+            color: var(--accent);
+        }
+
+        .video-container {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <header>
+            <p class="mono"><span class="terminal-prompt">root@jack:~$</span>./init_minecraft_dev.sh</p>
+            <h1 class="typing-effect">Hello, I'm Jack.</h1>
+            <p class="subtitle">Minecraft Plugin Developer & Full-Stack Engineer.</p>
+
+            <div class="social-links">
+                <a href="https://github.com/jackbeardless" target="_blank" class="btn"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://linkedin.com/in/jackbeardd" target="_blank" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="mailto:jdbeard@proton.me" class="btn"><i class="fas fa-envelope"></i> Contact Me</a>
+            </div>
+        </header>
+
+        <section id="projects">
+            <h2 class="section-title">Featured Plugins</h2>
+
+            <div class="project-grid">
+
+                <!-- Sentinel Plugin -->
+                <div class="card" onclick="openModal('sentinel')">
+                    <div class="folder-icon"><i class="far fa-folder-open"></i></div>
+                    <h3 class="project-title">Sentinel</h3>
+                    <p class="project-desc">
+                        A full moderation system plugin built in Java with a MariaDB backend and a local web API for remote editing.
+                    </p>
+                    <div class="tech-stack">
+                        <span>Java</span>
+                        <span>MariaDB</span>
+                        <span>Paper API</span>
+                    </div>
+                </div>
+
+                <!-- Placeholder -->
+                <div class="card placeholder-card">
+                    <div class="folder-icon"><i class="fas fa-hammer"></i></div>
+                    <h3 class="project-title">Plugin Project #2</h3>
+                    <p class="project-desc">Placeholder plugin project. Coming soon.</p>
+                    <div class="tech-stack">
+                        <span>Java</span>
+                        <span>Spigot</span>
+                    </div>
+                </div>
+
+                <div class="card placeholder-card">
+                    <div class="folder-icon"><i class="fas fa-hammer"></i></div>
+                    <h3 class="project-title">Plugin Project #3</h3>
+                    <p class="project-desc">Placeholder plugin project. Coming soon.</p>
+                    <div class="tech-stack">
+                        <span>Kotlin</span>
+                        <span>Paper</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section style="margin-bottom: 60px;">
+            <h2 class="section-title">Tech Arsenal</h2>
+            <div style="font-family: 'Fira Code', monospace; color: #8b949e;">
+                <p><span style="color:var(--accent)">></span> Languages: Java, Kotlin, HTML/CSS/JS, React</p>
+                <p><span style="color:var(--accent)">></span> Tools: IntelliJ IDEA, Maven, Gradle, Git</p>
+                <p><span style="color:var(--accent)">></span> APIs: Paper API, Spigot API, LuckPerms, PlaceholderAPI</p>
+                <p><span style="color:var(--accent)">></span> Areas: Gameplay Mechanics, Anti-Cheat Logic, Performance Optimisation</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>Built by Jack. &copy; 2024</p>
+        </footer>
+
+    </div>
+
+    <!-- Modal for Sentinel -->
+    <div id="modal-sentinel" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sentinel')">&times;</span>
+            <h2>Sentinel Plugin</h2>
+
+            <div class="video-container">
+                Video Demo Placeholder
+            </div>
+
+            <p>A complete server moderation solution featuring:</p>
+            <ul>
+                <li>MariaDB backend for persistent moderation data</li>
+                <li>Local web API to update punishment rules and settings</li>
+                <li>Modern, efficient Java codebase</li>
+                <li>Designed for Paper/Spigot servers</li>
+            </ul>
+
+            <a href="https://github.com/" target="_blank" class="btn" style="margin-top: 20px;">
+                <i class="fab fa-github"></i> GitHub Repo
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function openModal(id) {
+            document.getElementById("modal-" + id).style.display = "flex";
+        }
+        function closeModal(id) {
+            document.getElementById("modal-" + id).style.display = "none";
+        }
+        window.onclick = function(e) {
+            document.querySelectorAll('.modal').forEach(modal => {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+        }
+    </script>
+
+</body>
+</html>
