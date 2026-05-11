@@ -3,282 +3,887 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jack | Cybersecurity Enthusiast</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-    
+    <title>Duck — Minecraft Plugin Developer</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#0F172A',
+                        stone: '#1E293B',
+                        'stone-mid': '#334155',
+                        'stone-light': '#475569',
+                        duck: '#FBBF24',
+                        'duck-dark': '#D97706',
+                        'duck-dim': '#92400E',
+                    },
+                    fontFamily: {
+                        pixel: ['"Press Start 2P"', 'monospace'],
+                        vt: ['VT323', 'monospace'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        :root {
-            --bg-color: #0d1117; /* GitHub Dark Dimmed */
-            --card-bg: #161b22;
-            --text-main: #c9d1d9;
-            --text-header: #ffffff;
-            --accent: #2ea043; /* Git Green */
-            --accent-hover: #3fb950;
-            --border: #30363d;
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: #0F172A; color: #F8FAFC; overflow-x: hidden; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0F172A; }
+        ::-webkit-scrollbar-thumb { background: #334155; }
+        ::-webkit-scrollbar-thumb:hover { background: #FBBF24; }
+
+        .block-pattern {
+            background-image:
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 16px 16px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .btn-pixel {
+            clip-path: polygon(4px 0%, calc(100% - 4px) 0%, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0% calc(100% - 4px), 0% 4px);
         }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.6;
+        .section-label {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 9px;
+            color: #FBBF24;
+            letter-spacing: 0.15em;
         }
 
-        h1, h2, h3, .mono {
-            font-family: 'Fira Code', monospace;
-            color: var(--text-header);
-        }
+        .nav-link { position: relative; transition: color 200ms; }
+        .nav-link::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background: #FBBF24; transition: width 200ms; }
+        .nav-link:hover { color: #FBBF24; }
+        .nav-link:hover::after { width: 100%; }
 
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        
-        /* Container */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+        @keyframes floatUp {
+            0%   { transform: translateY(0) rotate(0deg);   opacity: 0; }
+            8%   { opacity: 0.5; }
+            92%  { opacity: 0.5; }
+            100% { transform: translateY(-105vh) rotate(270deg); opacity: 0; }
         }
+        .float-block { animation: floatUp linear forwards; }
 
-        /* Hero Section */
-        header {
-            padding: 80px 0 60px;
-            border-bottom: 1px solid var(--border);
-        }
+        .typing-text::after { content: '_'; color: #FBBF24; animation: blink 1s step-end infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        .terminal-prompt {
-            color: var(--accent);
-            margin-right: 10px;
-        }
+        .skill-pill { background: #1E293B; border: 2px solid #334155; color: #CBD5E1; font-size: 0.8rem; padding: 4px 10px; transition: background 180ms, border-color 180ms, color 180ms; cursor: default; }
+        .skill-pill:hover { background: #FBBF24; border-color: #D97706; color: #0F172A; font-weight: 600; }
 
-        h1 { font-size: 2.5rem; margin-bottom: 15px; }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #8b949e;
-            margin-bottom: 30px;
-        }
+        .bar-track { height: 6px; background: #334155; width: 100%; }
+        .bar-fill { height: 6px; background: linear-gradient(90deg, #D97706, #FBBF24); width: 0%; transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1); }
 
-        /* Social Buttons */
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
+        .project-card { transition: transform 220ms, box-shadow 220ms; }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(251,191,36,0.15); }
 
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            padding: 10px 20px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-            background: var(--card-bg);
-            color: var(--text-main);
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-        }
+        .review-card { transition: transform 220ms, box-shadow 220ms; }
+        .review-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(251,191,36,0.12); }
 
-        .btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            transform: translateY(-2px);
-        }
+        .mc-input { background: #1E293B; border: 2px solid #334155; color: #F8FAFC; outline: none; width: 100%; transition: border-color 180ms; }
+        .mc-input:focus { border-color: #FBBF24; }
+        .mc-input::placeholder { color: #475569; }
 
-        .btn i { margin-right: 8px; }
+        #mobile-nav { display: none; }
+        #mobile-nav.open { display: block; }
 
-        /* Projects Section */
-        #projects { padding: 60px 0; }
-        
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .section-title::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-            margin-left: 20px;
-        }
+        .hero-glow { background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(251,191,36,0.06) 0%, transparent 70%); }
 
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 25px;
-            transition: 0.3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .card-top { margin-bottom: 20px; }
-        
-        .folder-icon {
-            color: var(--accent);
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-
-        .project-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .project-desc {
-            font-size: 0.9rem;
-            color: #8b949e;
-        }
-
-        .tech-stack {
-            margin-top: 20px;
-            display: flex;
-            gap: 15px;
-            font-size: 0.8rem;
-            font-family: 'Fira Code', monospace;
-            color: #8b949e;
-        }
-
-        .placeholder-card {
-            border: 1px dashed var(--border);
-            background: transparent;
-            opacity: 0.6;
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 40px 0;
-            font-size: 0.8rem;
-            color: #8b949e;
-            border-top: 1px solid var(--border);
-        }
-
-        /* Typewriter Animation */
-        .typing-effect {
-            border-right: 3px solid var(--accent);
-            white-space: nowrap;
-            overflow: hidden;
-            animation: blink 0.75s step-end infinite;
-        }
-
-        @keyframes blink {
-            from, to { border-color: transparent }
-            50% { border-color: var(--accent) }
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .social-links { flex-direction: column; }
+        @media (prefers-reduced-motion: reduce) {
+            .float-block { display: none !important; }
+            .typing-text::after { animation: none; }
+            * { transition-duration: 1ms !important; animation-duration: 1ms !important; }
         }
     </style>
 </head>
-<body>
+<body class="bg-obsidian">
 
-    <div class="container">
-        
-        <header>
-            <p class="mono"><span class="terminal-prompt">root@jack:~$</span>./init_portfolio.sh</p>
-            <h1 class="typing-effect">Hello, I'm Jack.</h1>
-            <p class="subtitle">Cybersecurity Enthusiast & Final Year Student.</p>
-            
-            <div class="social-links">
-                <a href="https://github.com/jackbeardless" target="_blank" class="btn">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                <a href="https://linkedin.com/in/jackbeardd" target="_blank" class="btn">
-                    <i class="fab fa-linkedin"></i> LinkedIn
-                </a>
-                <a href="mailto:jdbeard@proton.me" class="btn">
-                    <i class="fas fa-envelope"></i> Contact Me
-                </a>
+<!-- NAV -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50" style="background:rgba(15,23,42,0.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(71,85,105,0.3);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <a href="#home" class="flex items-center gap-3 cursor-pointer flex-shrink-0">
+                <svg viewBox="0 0 32 32" width="36" height="36" style="image-rendering:pixelated;" aria-hidden="true">
+                    <rect x="6"  y="16" width="20" height="13" fill="#FBBF24"/>
+                    <rect x="10" y="6"  width="16" height="13" fill="#FBBF24"/>
+                    <rect x="8"  y="8"  width="4"  height="8"  fill="#FBBF24"/>
+                    <rect x="24" y="11" width="6"  height="4"  fill="#F97316"/>
+                    <rect x="26" y="10" width="4"  height="2"  fill="#EA580C"/>
+                    <rect x="12" y="8"  width="3"  height="3"  fill="#0F172A"/>
+                    <rect x="13" y="8"  width="1"  height="1"  fill="white"/>
+                    <rect x="8"  y="20" width="16" height="8"  fill="#D97706"/>
+                    <rect x="10" y="22" width="12" height="5"  fill="#FBBF24"/>
+                    <rect x="4"  y="14" width="4"  height="8"  fill="#FBBF24"/>
+                    <rect x="2"  y="12" width="4"  height="6"  fill="#FBBF24"/>
+                    <rect x="9"  y="29" width="7"  height="3"  fill="#F97316"/>
+                    <rect x="18" y="29" width="7"  height="3"  fill="#F97316"/>
+                </svg>
+                <span class="font-pixel text-duck hidden sm:block" style="font-size:11px;">Duck</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a href="#about"    class="nav-link text-slate-300 text-sm font-medium cursor-pointer">About</a>
+                <a href="#skills"   class="nav-link text-slate-300 text-sm font-medium cursor-pointer">Skills</a>
+                <a href="#projects" class="nav-link text-slate-300 text-sm font-medium cursor-pointer">Projects</a>
+                <a href="#reviews"  class="nav-link text-slate-300 text-sm font-medium cursor-pointer">Reviews</a>
+                <a href="#contact"  class="nav-link text-slate-300 text-sm font-medium cursor-pointer">Contact</a>
             </div>
-        </header>
 
-        <section id="projects">
-            <h2 class="section-title">Featured Projects</h2>
-            
-            <div class="project-grid">
-                
-                <a href="https://github.com/jackbeardless/sus-login-detector" target="_blank" class="card">
-                    <div class="card-top">
-                        <div class="folder-icon"><i class="far fa-folder-open"></i></div>
-                        <h3 class="project-title">Suspicious Login Detector</h3>
-                        <p class="project-desc">
-                            A lightweight, modular Python tool that acts as a Mini SIEM. It analyses logs to detect brute force attempts and time anomalies.
-                        </p>
-                    </div>
-                    <div class="tech-stack">
-                        <span>Python</span>
-                        <span>Log Analysis</span>
-                        <span>Security</span>
-                    </div>
-                </a>
+            <a href="#contact" class="hidden md:flex btn-pixel bg-duck hover:bg-duck-dark text-obsidian font-bold text-sm px-5 py-2 cursor-pointer transition-colors duration-200 items-center gap-2">Hire Me</a>
 
-                <div class="card placeholder-card">
-                    <div class="card-top">
-                        <div class="folder-icon"><i class="fas fa-hammer"></i></div>
-                        <h3 class="project-title">Network Packet Sniffer</h3>
-                        <p class="project-desc">
-                            Currently in development. A tool to capture and analyse TCP/IP packets for educational purposes.
-                        </p>
-                    </div>
-                    <div class="tech-stack">
-                        <span>Socket</span>
-                        <span>Networking</span>
-                    </div>
-                </div>
+            <button id="hamburger" class="md:hidden p-2 text-slate-300 hover:text-duck transition-colors cursor-pointer" aria-label="Open menu">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="square" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-nav" class="md:hidden border-t border-stone-mid/30" style="background:rgba(30,41,59,0.98);">
+        <div class="px-4 py-5 flex flex-col gap-5">
+            <a href="#about"    class="text-slate-300 hover:text-duck transition-colors cursor-pointer font-medium" onclick="closeMobileNav()">About</a>
+            <a href="#skills"   class="text-slate-300 hover:text-duck transition-colors cursor-pointer font-medium" onclick="closeMobileNav()">Skills</a>
+            <a href="#projects" class="text-slate-300 hover:text-duck transition-colors cursor-pointer font-medium" onclick="closeMobileNav()">Projects</a>
+            <a href="#reviews"  class="text-slate-300 hover:text-duck transition-colors cursor-pointer font-medium" onclick="closeMobileNav()">Reviews</a>
+            <a href="#contact"  class="text-slate-300 hover:text-duck transition-colors cursor-pointer font-medium" onclick="closeMobileNav()">Contact</a>
+            <a href="#contact"  class="btn-pixel bg-duck hover:bg-duck-dark text-obsidian font-bold text-sm px-5 py-2.5 cursor-pointer transition-colors duration-200 text-center" onclick="closeMobileNav()">Hire Me</a>
+        </div>
+    </div>
+</nav>
 
-                <div class="card placeholder-card">
-                    <div class="card-top">
-                        <div class="folder-icon"><i class="fas fa-hammer"></i></div>
-                        <h3 class="project-title">Vulnerability Scanner</h3>
-                        <p class="project-desc">
-                            Planned Project. Automated script to check for common misconfigurations in local servers.
-                        </p>
-                    </div>
-                    <div class="tech-stack">
-                        <span>Bash</span>
-                        <span>Automation</span>
-                    </div>
-                </div>
 
+<!-- HERO -->
+<section id="home" class="relative min-h-screen flex items-center justify-center overflow-hidden block-pattern pt-16">
+    <div class="hero-glow absolute inset-0 pointer-events-none" aria-hidden="true"></div>
+    <div id="blocks-container" class="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true"></div>
+
+    <div class="relative z-10 text-center px-4 sm:px-6 max-w-4xl mx-auto">
+        <div class="inline-flex items-center gap-2.5 border border-stone-mid/60 px-4 py-2 mb-10" style="background:rgba(30,41,59,0.7);">
+            <span class="w-2 h-2 bg-duck rounded-full animate-pulse flex-shrink-0"></span>
+            <span class="font-vt text-duck" style="font-size:1.15rem;letter-spacing:0.05em;">Available for Projects</span>
+        </div>
+
+        <h1 class="font-pixel text-duck mb-5 leading-loose" style="font-size:clamp(16px,4vw,34px);">Duck</h1>
+
+        <p class="font-vt text-slate-300 mb-8 typing-text" id="typing-display" style="font-size:clamp(26px,5.5vw,52px);min-height:56px;"></p>
+
+        <p class="text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed text-sm sm:text-base">
+            Building custom Minecraft plugins for private servers. No public releases (yet) every plugin is
+            tailored specifically to the server it's built for, from unique game modes to full server frameworks.
+        </p>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <a href="#projects" class="btn-pixel w-full sm:w-auto bg-duck hover:bg-duck-dark text-obsidian font-bold px-8 py-3 cursor-pointer transition-colors duration-200 flex items-center justify-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0l-7 7m7-7l-7-7"/></svg>
+                View Work
+            </a>
+            <a href="#contact" class="w-full sm:w-auto border-2 border-stone-mid hover:border-duck text-slate-300 hover:text-duck font-bold px-8 py-3 cursor-pointer transition-all duration-200 flex items-center justify-center gap-2">Get In Touch</a>
+        </div>
+
+        <div class="grid grid-cols-3 max-w-sm mx-auto border border-stone-mid/50" style="background:rgba(30,41,59,0.5);">
+            <div class="py-5 text-center">
+                <div class="font-pixel text-duck mb-1" style="font-size:clamp(14px,3.5vw,24px);">15+</div>
+                <div class="text-slate-500 text-xs">Plugins Built</div>
             </div>
-        </section>
-
-        <section style="margin-bottom: 60px;">
-            <h2 class="section-title">Tech Arsenal</h2>
-            <div style="font-family: 'Fira Code', monospace; color: #8b949e;">
-                <p><span style="color:var(--accent)">></span> Languages: Python, SQL, Bash, C++, Java</p>
-                <p><span style="color:var(--accent)">></span> Tools: Splunk, Wireshark, Docker, Git</p>
-                <p><span style="color:var(--accent)">></span> Certs: Studying for CompTIA Security+</p>
+            <div class="py-5 text-center border-x border-stone-mid/50">
+                <div class="font-pixel text-duck mb-1" style="font-size:clamp(14px,3.5vw,24px);">20+</div>
+                <div class="text-slate-500 text-xs">Servers Helped</div>
             </div>
-        </section>
-
-        <footer>
-            <p>Built by Jack. &copy; 2024</p>
-        </footer>
-
+            <div class="py-5 text-center">
+                <div class="font-pixel text-duck mb-1" style="font-size:clamp(14px,3.5vw,24px);">4+</div>
+                <div class="text-slate-500 text-xs">Years Exp.</div>
+            </div>
+        </div>
     </div>
 
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 animate-bounce" aria-hidden="true">
+        <span class="font-pixel text-slate-600" style="font-size:7px;">SCROLL</span>
+        <svg class="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+    </div>
+</section>
+
+
+<!-- ABOUT -->
+<section id="about" class="py-24 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-14 items-center">
+
+            <div class="flex justify-center order-2 md:order-1">
+                <div class="relative">
+                    <div class="border-2 border-stone-mid overflow-hidden" style="width:256px;height:256px;background:#1E293B;">
+                        <svg viewBox="0 0 64 64" width="256" height="256" style="image-rendering:pixelated;" xmlns="http://www.w3.org/2000/svg" aria-label="Duck pixel art avatar">
+                            <rect width="64" height="64" fill="#1E293B"/>
+                            <!-- water -->
+                            <rect x="0" y="50" width="64" height="14" fill="#1a2f4a"/>
+                            <rect x="0" y="50" width="64" height="2"  fill="#1e3a5f"/>
+                            <!-- body -->
+                            <rect x="10" y="30" width="44" height="22" fill="#FBBF24"/>
+                            <rect x="10" y="46" width="44" height="6"  fill="#D97706"/>
+                            <rect x="8"  y="32" width="4"  height="18" fill="#FBBF24"/>
+                            <rect x="52" y="32" width="4"  height="14" fill="#FBBF24"/>
+                            <!-- tail -->
+                            <rect x="4"  y="22" width="8"  height="16" fill="#FBBF24"/>
+                            <rect x="2"  y="18" width="6"  height="10" fill="#FBBF24"/>
+                            <rect x="4"  y="16" width="4"  height="6"  fill="#FBBF24"/>
+                            <!-- wing -->
+                            <rect x="14" y="34" width="32" height="14" fill="#D97706"/>
+                            <rect x="16" y="36" width="28" height="10" fill="#FBBF24"/>
+                            <rect x="18" y="37" width="24" height="7"  fill="#F6D860"/>
+                            <rect x="16" y="43" width="6"  height="2"  fill="#D97706"/>
+                            <rect x="24" y="43" width="6"  height="2"  fill="#D97706"/>
+                            <rect x="32" y="43" width="6"  height="2"  fill="#D97706"/>
+                            <rect x="40" y="43" width="6"  height="2"  fill="#D97706"/>
+                            <!-- head -->
+                            <rect x="30" y="10" width="24" height="22" fill="#FBBF24"/>
+                            <rect x="28" y="12" width="4"  height="16" fill="#FBBF24"/>
+                            <rect x="30" y="10" width="20" height="4"  fill="#FBBF24"/>
+                            <!-- beak -->
+                            <rect x="52" y="18" width="10" height="6"  fill="#F97316"/>
+                            <rect x="54" y="16" width="8"  height="3"  fill="#EA580C"/>
+                            <rect x="52" y="24" width="8"  height="2"  fill="#EA580C"/>
+                            <rect x="56" y="19" width="2"  height="2"  fill="#C2410C"/>
+                            <!-- eye -->
+                            <rect x="34" y="14" width="6"  height="6"  fill="white"/>
+                            <rect x="36" y="15" width="3"  height="4"  fill="#0F172A"/>
+                            <rect x="37" y="15" width="1"  height="1"  fill="white"/>
+                            <!-- cheek blush -->
+                            <rect x="44" y="20" width="6"  height="3"  fill="#FDE68A" opacity="0.5"/>
+                            <!-- feet -->
+                            <rect x="18" y="52" width="12" height="5"  fill="#F97316"/>
+                            <rect x="34" y="52" width="12" height="5"  fill="#F97316"/>
+                            <rect x="14" y="54" width="6"  height="3"  fill="#EA580C"/>
+                            <rect x="22" y="54" width="6"  height="3"  fill="#EA580C"/>
+                            <rect x="30" y="54" width="6"  height="3"  fill="#EA580C"/>
+                            <rect x="38" y="54" width="6"  height="3"  fill="#EA580C"/>
+                            <!-- ripples -->
+                            <rect x="8"  y="56" width="12" height="2"  fill="#1e3a5f"/>
+                            <rect x="28" y="58" width="16" height="2"  fill="#1e3a5f"/>
+                            <rect x="48" y="56" width="10" height="2"  fill="#1e3a5f"/>
+                        </svg>
+                    </div>
+                    <div class="absolute -top-3 -left-3 w-10 h-10 flex flex-col" aria-hidden="true">
+                        <div style="height:35%;background:#FBBF24;"></div>
+                        <div style="height:65%;background:#D97706;"></div>
+                    </div>
+                    <div class="absolute -bottom-3 -right-3 w-10 h-10 bg-stone-mid" aria-hidden="true"></div>
+                    <div class="absolute -top-3 -right-3 w-6 h-6" style="background:#F97316;" aria-hidden="true"></div>
+                    <div class="absolute -bottom-3 -left-3 w-6 h-6" style="background:#92400E;" aria-hidden="true"></div>
+                </div>
+            </div>
+
+            <div class="order-1 md:order-2">
+                <p class="section-label mb-3">// ABOUT_ME</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6 leading-tight">
+                    Private Plugins,<br><span class="text-duck">Built Right.</span>
+                </h2>
+                <p class="text-slate-400 mb-4 leading-relaxed">
+                    I'm Duck, a Minecraft developer specialising in custom private plugins for servers, and full server setups.
+                    I don't do public releases. Every plugin I write is purpose built for the server that commissioned it,
+                    meaning cleaner code, tighter integration, and no bloat from trying to please everyone.
+                </p>
+                <p class="text-slate-400 mb-8 leading-relaxed">
+                    With 5+ years across Spigot, Paper, and Fabric, I've built everything from lightweight utility
+                    plugins to full custom game modes. If you can imagine it in Minecraft, I can build it.
+                </p>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-stone p-4 border border-stone-mid/50">
+                        <div class="section-label mb-1.5">WORK TYPE</div>
+                        <div class="text-slate-300 text-sm">Private / Commission</div>
+                    </div>
+                    <div class="bg-stone p-4 border border-stone-mid/50">
+                        <div class="section-label mb-1.5">FOCUS</div>
+                        <div class="text-slate-300 text-sm">Plugin & Mod Dev</div>
+                    </div>
+                    <div class="bg-stone p-4 border border-stone-mid/50">
+                        <div class="section-label mb-1.5">STATUS</div>
+                        <div class="text-duck text-sm font-semibold">Open to Work</div>
+                    </div>
+                    <div class="bg-stone p-4 border border-stone-mid/50">
+                        <div class="section-label mb-1.5">PLATFORMS</div>
+                        <div class="text-slate-300 text-sm">Spigot · Paper · Fabric</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- SKILLS -->
+<section id="skills" class="py-24 px-4 sm:px-6 block-pattern" style="background-color:rgba(30,41,59,0.25);">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-14">
+            <p class="section-label mb-3">// SKILL_SET</p>
+            <h2 class="text-3xl sm:text-4xl font-bold">Tech <span class="text-duck">Inventory</span></h2>
+            <p class="text-slate-500 mt-3 max-w-md mx-auto text-sm">Tools and technologies in the toolkit</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+            <div class="bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 flex items-center justify-center border border-duck/30" style="background:rgba(251,191,36,0.08);">
+                        <svg class="w-5 h-5 text-duck" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8.851 18.56s-.917.534.653.714c1.902.218 2.874.187 4.969-.211 0 0 .552.346 1.321.646-4.699 2.013-10.633-.118-6.943-1.149M8.276 15.933s-1.028.761.542.924c2.032.209 3.636.227 6.413-.308 0 0 .384.389.987.602-5.679 1.661-12.007.13-7.942-1.218M13.116 11.475c1.158 1.333-.304 2.533-.304 2.533s2.939-1.518 1.589-3.418c-1.261-1.772-2.228-2.652 3.007-5.688 0 0-8.216 2.051-4.292 6.573M19.33 20.504s.679.559-.747.991c-2.712.822-11.288 1.069-13.669.033-.856-.373.75-.89 1.254-.998.527-.114.828-.093.828-.093-.953-.671-6.156 1.317-2.643 1.887 9.58 1.553 17.462-.7 14.977-1.82M9.292 13.21s-4.362 1.036-1.544 1.412c1.189.159 3.561.123 5.77-.062 1.806-.152 3.618-.477 3.618-.477s-.637.272-1.098.587c-4.429 1.165-12.986.623-10.522-.568 2.082-1.006 3.776-.892 3.776-.892M17.116 17.584c4.503-2.34 2.421-4.589.968-4.285-.355.074-.515.138-.515.138s.132-.207.385-.297c2.875-1.011 5.086 2.981-.928 4.562 0 0 .07-.062.09-.118M14.401 0s2.494 2.494-2.365 6.33c-3.896 3.077-.888 4.832-.001 6.836-2.274-2.053-3.943-3.858-2.824-5.539 1.644-2.469 6.197-3.665 5.19-7.627M9.734 23.924c4.322.277 10.959-.153 11.116-2.198 0 0-.302.775-3.572 1.391-3.688.694-8.239.613-10.937.168 0 0 .553.457 3.393.639"/></svg>
+                    </div>
+                    <h3 class="font-bold text-base">Core Languages</h3>
+                </div>
+                <div class="space-y-4">
+                    <div><div class="flex justify-between mb-1.5"><span class="text-slate-300 text-sm">Java</span><span class="text-duck text-sm font-medium">95%</span></div><div class="bar-track"><div class="bar-fill" data-w="95"></div></div></div>
+                    <div><div class="flex justify-between mb-1.5"><span class="text-slate-300 text-sm">Kotlin</span><span class="text-duck text-sm font-medium">72%</span></div><div class="bar-track"><div class="bar-fill" data-w="72"></div></div></div>
+                    <div><div class="flex justify-between mb-1.5"><span class="text-slate-300 text-sm">SQL</span><span class="text-duck text-sm font-medium">80%</span></div><div class="bar-track"><div class="bar-fill" data-w="80"></div></div></div>
+                    <div><div class="flex justify-between mb-1.5"><span class="text-slate-300 text-sm">Python (scripting)</span><span class="text-duck text-sm font-medium">60%</span></div><div class="bar-track"><div class="bar-fill" data-w="60"></div></div></div>
+                </div>
+            </div>
+
+            <div class="bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 flex items-center justify-center border border-duck/30" style="background:rgba(251,191,36,0.08);">
+                        <svg class="w-5 h-5 text-duck" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    </div>
+                    <h3 class="font-bold text-base">Minecraft APIs</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="skill-pill">Spigot API</span><span class="skill-pill">Paper API</span><span class="skill-pill">Bukkit API</span>
+                    <span class="skill-pill">Fabric API</span><span class="skill-pill">Forge</span><span class="skill-pill">WorldEdit API</span>
+                    <span class="skill-pill">Vault</span><span class="skill-pill">PlaceholderAPI</span><span class="skill-pill">ProtocolLib</span><span class="skill-pill">Citizens</span>
+                </div>
+            </div>
+
+            <div class="bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 flex items-center justify-center border border-duck/30" style="background:rgba(251,191,36,0.08);">
+                        <svg class="w-5 h-5 text-duck" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"/></svg>
+                    </div>
+                    <h3 class="font-bold text-base">Data & Storage</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="skill-pill">MySQL</span><span class="skill-pill">SQLite</span><span class="skill-pill">MongoDB</span>
+                    <span class="skill-pill">Redis</span><span class="skill-pill">HikariCP</span><span class="skill-pill">YAML / JSON</span>
+                </div>
+            </div>
+
+            <div class="bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 flex items-center justify-center border border-duck/30" style="background:rgba(251,191,36,0.08);">
+                        <svg class="w-5 h-5 text-duck" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-base">Dev Tools</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="skill-pill">IntelliJ IDEA</span><span class="skill-pill">Maven</span><span class="skill-pill">Gradle</span>
+                    <span class="skill-pill">Git / GitHub</span><span class="skill-pill">Docker</span><span class="skill-pill">Linux VPS</span>
+                </div>
+            </div>
+
+            <div class="bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 flex items-center justify-center border border-duck/30" style="background:rgba(251,191,36,0.08);">
+                        <svg class="w-5 h-5 text-duck" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h3 class="font-bold text-base">Specialisations</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="skill-pill">Custom Items</span><span class="skill-pill">Game Modes</span><span class="skill-pill">Economy Systems</span>
+                    <span class="skill-pill">NPC Systems</span><span class="skill-pill">Anti-Cheat</span><span class="skill-pill">Server Optimisation</span>
+                    <span class="skill-pill">Packet Manipulation</span>
+                </div>
+            </div>
+
+            <div class="bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 flex items-center justify-center border border-duck/30" style="background:rgba(251,191,36,0.08);">
+                        <svg class="w-5 h-5 text-duck" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
+                    </div>
+                    <h3 class="font-bold text-base">Server Experience</h3>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <span class="skill-pill">BungeeCord</span><span class="skill-pill">Velocity</span><span class="skill-pill">Minigames</span>
+                    <span class="skill-pill">Survival SMP</span><span class="skill-pill">Skyblock</span><span class="skill-pill">Factions</span>
+                    <span class="skill-pill">Prison</span><span class="skill-pill">KitPvP</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- PROJECTS -->
+<section id="projects" class="py-24 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-14">
+            <p class="section-label mb-3">// PROJECTS</p>
+            <h2 class="text-3xl sm:text-4xl font-bold">Private <span class="text-duck">Builds</span></h2>
+            <p class="text-slate-500 mt-3 max-w-md mx-auto text-sm">A selection of commissioned work — all built exclusively for the servers that use them</p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+            <div class="project-card bg-stone border border-stone-mid/50 overflow-hidden group">
+                <div class="h-44 relative overflow-hidden">
+                    <svg viewBox="0 0 300 176" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="image-rendering:pixelated;display:block;" aria-hidden="true">
+                        <rect width="300" height="176" fill="#090F1A"/>
+                        <rect x="0" y="140" width="300" height="36" fill="#1E293B"/>
+                        <rect x="0" y="136" width="300" height="6"  fill="#FBBF24"/>
+                        <rect x="10" y="70" width="50" height="70" fill="#253347"/><rect x="10" y="70" width="50" height="7" fill="#2E3E55"/>
+                        <rect x="70" y="50" width="60" height="90" fill="#253347"/><rect x="70" y="50" width="60" height="7" fill="#2E3E55"/>
+                        <rect x="190" y="85" width="70" height="55" fill="#253347"/><rect x="190" y="85" width="70" height="7" fill="#2E3E55"/>
+                        <rect x="18" y="86" width="12" height="10" fill="#FBBF24" opacity="0.55"/>
+                        <rect x="36" y="86" width="12" height="10" fill="#FBBF24" opacity="0.3"/>
+                        <rect x="18" y="104" width="12" height="10" fill="#FBBF24" opacity="0.7"/>
+                        <rect x="80" y="66" width="14" height="12" fill="#FBBF24" opacity="0.6"/>
+                        <rect x="102" y="86" width="14" height="12" fill="#FBBF24" opacity="0.8"/>
+                        <rect x="198" y="100" width="14" height="12" fill="#FBBF24" opacity="0.65"/>
+                        <rect x="12" y="10" width="2" height="2" fill="white" opacity="0.4"/>
+                        <rect x="155" y="20" width="2" height="2" fill="white" opacity="0.5"/>
+                        <rect x="265" y="12" width="2" height="2" fill="white" opacity="0.4"/>
+                    </svg>
+                    <div class="absolute inset-0 bg-gradient-to-t from-stone/90 via-transparent to-transparent"></div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.4);color:#FBBF24;">PAPER</span>
+                        <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(71,85,105,0.3);border-color:rgba(71,85,105,0.5);color:#94A3B8;">PRIVATE</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <h3 class="font-bold text-base mb-2 group-hover:text-duck transition-colors duration-200">NeuroCull</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">A high performance entity management system that uses packet level manipulation and asynchronous AI "lobotomization" to maintain 20 TPS on servers with 5,000+ entities.</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Paper API</span>
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Culling</span>
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Performance</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card bg-stone border border-stone-mid/50 overflow-hidden group">
+                <div class="h-44 relative overflow-hidden">
+                    <svg viewBox="0 0 300 176" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="image-rendering:pixelated;display:block;" aria-hidden="true">
+                        <rect width="300" height="176" fill="#08060F"/>
+                        <rect x="0" y="0" width="74" height="22" fill="#161224" stroke="#100E1C" stroke-width="1"/>
+                        <rect x="76" y="0" width="74" height="22" fill="#161224" stroke="#100E1C" stroke-width="1"/>
+                        <rect x="152" y="0" width="74" height="22" fill="#161224" stroke="#100E1C" stroke-width="1"/>
+                        <rect x="40" y="24" width="74" height="22" fill="#161224" stroke="#100E1C" stroke-width="1"/>
+                        <rect x="55" y="66" width="5" height="14" fill="#6B3A15"/><rect x="53" y="60" width="9" height="8" fill="#FF8C00"/><rect x="50" y="54" width="15" height="8" fill="#FF4500" opacity="0.35"/>
+                        <rect x="240" y="66" width="5" height="14" fill="#6B3A15"/><rect x="238" y="60" width="9" height="8" fill="#FF8C00"/><rect x="235" y="54" width="15" height="8" fill="#FF4500" opacity="0.35"/>
+                        <rect x="146" y="72" width="6" height="52" fill="#7C3AED"/>
+                        <rect x="134" y="84" width="30" height="5" fill="#7C3AED"/>
+                        <rect x="148" y="68" width="2" height="8" fill="#A78BFA"/>
+                        <rect x="146" y="72" width="6" height="52" fill="#A855F7" opacity="0.3"/>
+                        <rect x="210" y="110" width="40" height="30" fill="#5C3A1E"/><rect x="210" y="110" width="40" height="6" fill="#7A4E2A"/>
+                        <rect x="226" y="122" width="8" height="6" fill="#FFD700"/>
+                        <rect x="0" y="150" width="300" height="26" fill="#0F0C1A"/>
+                    </svg>
+                    <div class="absolute inset-0 bg-gradient-to-t from-stone/90 via-transparent to-transparent"></div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4);color:#A855F7;">PAPER</span>
+                        <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(71,85,105,0.3);border-color:rgba(71,85,105,0.5);color:#94A3B8;">PRIVATE</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <h3 class="font-bold text-base mb-2 group-hover:text-duck transition-colors duration-200">Pwarp System</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">Advanced Pwarp plugin built for ExodusMC.</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Paper API</span>
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">SQLite</span>
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">GUI design</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card bg-stone border border-stone-mid/50 overflow-hidden group">
+                <div class="h-44 relative overflow-hidden">
+                    <svg viewBox="0 0 300 176" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="image-rendering:pixelated;display:block;" aria-hidden="true">
+                        <rect width="300" height="176" fill="#0A1628"/>
+                        <rect x="18" y="12" width="2" height="2" fill="white" opacity="0.7"/>
+                        <rect x="160" y="8" width="2" height="2" fill="white" opacity="0.8"/>
+                        <rect x="240" y="22" width="2" height="2" fill="white" opacity="0.6"/>
+                        <rect x="80" y="100" width="140" height="44" fill="#5C4033"/>
+                        <rect x="70" y="92" width="160" height="14" fill="#FBBF24"/>
+                        <rect x="96" y="64" width="7" height="30" fill="#5C4033"/>
+                        <rect x="82" y="42" width="35" height="24" fill="#22C55E"/><rect x="88" y="32" width="23" height="14" fill="#16A34A"/>
+                        <rect x="182" y="72" width="5" height="22" fill="#5C4033"/>
+                        <rect x="172" y="54" width="25" height="20" fill="#22C55E"/>
+                        <rect x="196" y="106" width="8" height="70" fill="#3B82F6" opacity="0.45"/>
+                    </svg>
+                    <div class="absolute inset-0 bg-gradient-to-t from-stone/90 via-transparent to-transparent"></div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(59,130,246,0.15);border-color:rgba(59,130,246,0.4);color:#60A5FA;">PAPER</span>
+                        <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(71,85,105,0.3);border-color:rgba(71,85,105,0.5);color:#94A3B8;">PRIVATE</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <h3 class="font-bold text-base mb-2 group-hover:text-duck transition-colors duration-200">SkyRealms</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">Feature-rich Skyblock system with island levelling, custom challenges, auction house, and competitive leaderboards.</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Paper API</span>
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Redis</span>
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Vault</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wide project -->
+            <div class="project-card bg-stone border border-stone-mid/50 overflow-hidden group md:col-span-2">
+                <div class="flex flex-col md:flex-row">
+                    <div class="h-48 md:h-auto md:w-72 flex-shrink-0 relative overflow-hidden">
+                        <svg viewBox="0 0 288 192" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="image-rendering:pixelated;display:block;" aria-hidden="true">
+                            <rect width="288" height="192" fill="#0C0816"/>
+                            <rect x="0" y="140" width="288" height="52" fill="#1a1330"/>
+                            <rect x="0" y="136" width="288" height="6" fill="#2A1F44"/>
+                            <rect x="30" y="80" width="32" height="32" fill="#C0392B"/>
+                            <rect x="30" y="80" width="32" height="8" fill="#F8FAFC"/><rect x="30" y="104" width="32" height="8" fill="#F8FAFC"/><rect x="38" y="88" width="16" height="8" fill="#F8FAFC"/>
+                            <rect x="14" y="62" width="10" height="10" fill="#F97316" opacity="0.75"/>
+                            <rect x="70" y="44" width="12" height="12" fill="#EF4444" opacity="0.65"/>
+                            <rect x="90" y="74" width="8" height="8" fill="#FCD34D" opacity="0.9"/>
+                            <rect x="160" y="60" width="14" height="16" fill="#C48B53"/>
+                            <rect x="158" y="76" width="18" height="20" fill="#1D4ED8"/>
+                            <rect x="160" y="96" width="7" height="16" fill="#1E40AF"/><rect x="169" y="96" width="7" height="16" fill="#1E40AF"/>
+                            <rect x="178" y="68" width="3" height="18" fill="#CBD5E1"/><rect x="175" y="73" width="9" height="3" fill="#CBD5E1"/>
+                            <rect x="208" y="60" width="14" height="16" fill="#C48B53"/>
+                            <rect x="206" y="76" width="18" height="20" fill="#991B1B"/>
+                            <rect x="208" y="96" width="7" height="16" fill="#7F1D1D"/><rect x="217" y="96" width="7" height="16" fill="#7F1D1D"/>
+                            <rect x="200" y="68" width="3" height="18" fill="#CBD5E1"/><rect x="197" y="73" width="9" height="3" fill="#CBD5E1"/>
+                        </svg>
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-stone/90 hidden md:block"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-stone/90 via-transparent to-transparent md:hidden"></div>
+                    </div>
+                    <div class="p-6 flex flex-col justify-center">
+                        <div class="flex flex-wrap items-center gap-2 mb-3">
+                            <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(249,115,22,0.15);border-color:rgba(249,115,22,0.4);color:#FB923C;">SPIGOT</span>
+                            <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(71,85,105,0.3);border-color:rgba(71,85,105,0.5);color:#94A3B8;">PRIVATE</span>
+                            <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(251,191,36,0.15);border-color:rgba(251,191,36,0.4);color:#FBBF24;">FEATURED</span>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3 group-hover:text-duck transition-colors duration-200">BattleArena Suite</h3>
+                        <p class="text-slate-400 text-sm mb-4 leading-relaxed">Complete PvP framework supporting 10+ game modes — KitPvP, Factions, tournament brackets — with real-time stats, Discord bot integration, and a BungeeCord lobby system. Currently powering 3 active servers.</p>
+                        <div class="flex flex-wrap gap-1.5">
+                            <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Spigot API</span>
+                            <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">MySQL</span>
+                            <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Redis</span>
+                            <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Discord JDA</span>
+                            <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">BungeeCord</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card bg-stone border border-stone-mid/50 overflow-hidden group">
+                <div class="h-44 relative overflow-hidden">
+                    <svg viewBox="0 0 300 176" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="image-rendering:pixelated;display:block;" aria-hidden="true">
+                        <rect width="300" height="176" fill="#0A1020"/>
+                        <rect x="30" y="20" width="240" height="136" fill="#1E293B"/>
+                        <rect x="30" y="20" width="240" height="22" fill="#334155"/>
+                        <rect x="38" y="27" width="80" height="8" fill="#FBBF24" opacity="0.7"/>
+                        <rect x="254" y="25" width="12" height="12" fill="#EF4444" opacity="0.8"/>
+                        <rect x="50" y="58" width="28" height="28" fill="#334155" stroke="#475569" stroke-width="2"/><rect x="54" y="62" width="20" height="20" fill="#FFD700"/>
+                        <rect x="108" y="58" width="28" height="28" fill="#334155" stroke="#475569" stroke-width="2"/><rect x="112" y="62" width="20" height="20" fill="#60A5FA"/>
+                        <rect x="166" y="58" width="28" height="28" fill="#334155" stroke="#475569" stroke-width="2"/><rect x="170" y="62" width="20" height="20" fill="#EF4444"/>
+                        <rect x="224" y="58" width="28" height="28" fill="#334155" stroke="#475569" stroke-width="2"/><rect x="228" y="62" width="20" height="20" fill="#A855F7"/>
+                        <rect x="50" y="90" width="28" height="8" fill="#1E293B"/><rect x="52" y="91" width="16" height="6" fill="#FFD700" opacity="0.6"/>
+                        <rect x="105" y="120" width="90" height="5" fill="#FBBF24"/>
+                        <rect x="189" y="114" width="5" height="17" fill="#FBBF24"/>
+                        <rect x="183" y="112" width="17" height="5" fill="#FBBF24"/>
+                    </svg>
+                    <div class="absolute inset-0 bg-gradient-to-t from-stone/90 via-transparent to-transparent"></div>
+                    <div class="absolute top-3 left-3 flex gap-2">
+                        <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(234,179,8,0.15);border-color:rgba(234,179,8,0.4);color:#EAB308;">PAPER</span>
+                        <span class="border text-xs px-2 py-0.5 font-pixel" style="font-size:7px;background:rgba(71,85,105,0.3);border-color:rgba(71,85,105,0.5);color:#94A3B8;">PRIVATE</span>
+                    </div>
+                </div>
+                <div class="p-5">
+                    <h3 class="font-bold text-base mb-2 group-hover:text-duck transition-colors duration-200">EcoTrade</h3>
+                    <p class="text-slate-400 text-sm mb-4 leading-relaxed">Player-driven economy with auction house, player shops, stock-market mechanics, and anti-inflation systems for a long-running SMP.</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Paper API</span>
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">Vault</span>
+                        <span class="text-xs bg-stone-mid px-2 py-0.5 text-slate-400">MySQL</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- REVIEWS -->
+<section id="reviews" class="py-24 px-4 sm:px-6 block-pattern" style="background-color:rgba(30,41,59,0.25);">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-14">
+            <p class="section-label mb-3">// REVIEWS</p>
+            <h2 class="text-3xl sm:text-4xl font-bold">What <span class="text-duck">Clients Say</span></h2>
+            <p class="text-slate-500 mt-3 max-w-md mx-auto text-sm">Feedback from server owners I've worked with</p>
+        </div>
+
+        <!-- star row helper -->
+        <template id="stars">
+            <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+        </template>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+            <div class="review-card bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200 flex flex-col">
+                <div class="flex gap-1 mb-4" aria-label="5 stars">
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </div>
+                <blockquote class="text-slate-300 text-sm leading-relaxed flex-1 mb-5">"Got the work done like I wanted it to. Definetely recommend! <3"</blockquote>
+                <div class="flex items-center gap-3 pt-4 border-t border-stone-mid/50">
+                    <div data-discord-id="812294130481758239" class="review-avatar w-9 h-9 flex items-center justify-center font-pixel text-obsidian text-xs flex-shrink-0" style="background:#FBBF24;font-size:8px;"></div>
+                    <div><div class="text-slate-200 text-sm font-semibold">Bilal</div><div class="text-slate-500 text-xs">Server Owner</div></div>
+                </div>
+            </div>
+
+            <div class="review-card bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200 flex flex-col">
+                <div class="flex gap-1 mb-4" aria-label="5 stars">
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </div>
+                <blockquote class="text-slate-300 text-sm leading-relaxed flex-1 mb-5">"Requested a nice plugin for my server and Duck got it done soon as possible and worked very closely with me to make sure it was perfect how I would like it! Highly recommend!"</blockquote>
+                <div class="flex items-center gap-3 pt-4 border-t border-stone-mid/50">
+                    <div data-avatar-url="" class="review-avatar w-9 h-9 flex items-center justify-center font-pixel text-obsidian text-xs flex-shrink-0" style="background:#FBBF24;font-size:8px;">NX</div>
+                    <div><div class="text-slate-200 text-sm font-semibold">Rhys</div><div class="text-slate-500 text-xs">ExodusMC Owner</div></div>
+                </div>
+            </div>
+
+            <div class="review-card bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200 flex flex-col">
+                <div class="flex gap-1 mb-4" aria-label="5 stars">
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </div>
+                <blockquote class="text-slate-300 text-sm leading-relaxed flex-1 mb-5">"Amazing work from Duck, reached out with a custom plugin idea and he made it perfectly down to all the small details. Very fast delivery and amazing quality! Defo recommend! 🤝"</blockquote>
+                <div class="flex items-center gap-3 pt-4 border-t border-stone-mid/50">
+                    <div data-avatar-url="" class="review-avatar w-9 h-9 flex items-center justify-center font-pixel text-obsidian text-xs flex-shrink-0" style="background:#FBBF24;font-size:8px;">BK</div>
+                    <div><div class="text-slate-200 text-sm font-semibold">Tayo</div><div class="text-slate-500 text-xs">Neo Survival Owner</div></div>
+                </div>
+            </div>
+
+            <!-- Wide review -->
+            <div class="review-card bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200 md:col-span-2">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="flex gap-1" aria-label="5 stars">
+                        <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                        <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    </div>
+                    <span class="text-slate-500 text-xs">Repeat client · 3 projects</span>
+                </div>
+                <blockquote class="text-slate-300 text-sm leading-relaxed mb-5">"We've now commissioned Duck for three separate plugins across our network  a custom dungeon system, a clan wars framework, and a cosmetics shop. Every single one delivered on time, bug-free, with solid documentation. Duck is the only developer we trust for anything critical. If you're running a serious server and need custom development, stop looking."</blockquote>
+                <div class="flex items-center gap-3 pt-4 border-t border-stone-mid/50">
+                    <div data-avatar-url="" class="review-avatar w-9 h-9 flex items-center justify-center font-pixel text-obsidian text-xs flex-shrink-0" style="background:#FBBF24;font-size:8px;">SR</div>
+                    <div><div class="text-slate-200 text-sm font-semibold">StormRaider_</div><div class="text-slate-500 text-xs">Network Owner · 500+ concurrent players</div></div>
+                </div>
+            </div>
+
+            <div class="review-card bg-stone p-6 border border-stone-mid/50 hover:border-duck/40 transition-colors duration-200 flex flex-col">
+                <div class="flex gap-1 mb-4" aria-label="5 stars">
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                    <svg class="w-4 h-4 text-duck" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                </div>
+                <blockquote class="text-slate-300 text-sm leading-relaxed flex-1 mb-5">"Had a complex Skyblock system commissioned. Duck asked the right questions upfront, kept us updated daily, and the result was exactly what we envisioned. Post-launch support was great too."</blockquote>
+                <div class="flex items-center gap-3 pt-4 border-t border-stone-mid/50">
+                    <div data-avatar-url="" class="review-avatar w-9 h-9 flex items-center justify-center font-pixel text-obsidian text-xs flex-shrink-0" style="background:#FBBF24;font-size:8px;">VX</div>
+                    <div><div class="text-slate-200 text-sm font-semibold">VoidX</div><div class="text-slate-500 text-xs">Skyblock Server Owner</div></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact" class="py-24 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-14">
+            <p class="section-label mb-3">// CONTACT</p>
+            <h2 class="text-3xl sm:text-4xl font-bold">Let's <span class="text-duck">Connect</span></h2>
+            <p class="text-slate-500 mt-3 max-w-md mx-auto text-sm">Have a plugin idea? Reach out — I respond within 24 hours.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-10">
+            <div>
+                <h3 class="font-bold text-xl mb-6">Reach Out</h3>
+                <p class="text-slate-400 text-sm leading-relaxed mb-8">All work is private and custom — no public plugins, no templates. Tell me what you're building and I'll let you know if I can help.</p>
+                <div class="space-y-3">
+                    <a href="javascript:void(0)" class="flex items-center gap-4 p-4 bg-stone border border-stone-mid/50 hover:border-duck/50 transition-colors duration-200 cursor-pointer group">
+                        <div class="w-10 h-10 flex items-center justify-center border border-indigo-500/30 flex-shrink-0" style="background:rgba(99,102,241,0.1);">
+                            <svg class="w-5 h-5 text-indigo-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-slate-500 text-xs mb-0.5">Discord (preferred)</div>
+                            <div class="text-slate-300 text-sm group-hover:text-duck transition-colors">duckontren</div>
+                        </div>
+                    </a>
+                    <a href="javascript:void(0)" class="flex items-center gap-4 p-4 bg-stone border border-stone-mid/50 hover:border-duck/50 transition-colors duration-200 cursor-pointer group">
+                        <div class="w-10 h-10 flex items-center justify-center border border-stone-light/30 flex-shrink-0" style="background:rgba(71,85,105,0.2);">
+                            <svg class="w-5 h-5 text-slate-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-slate-500 text-xs mb-0.5">GitHub</div>
+                            <div class="text-slate-300 text-sm group-hover:text-duck transition-colors">github.com/jackbeardless</div>
+                        </div>
+                    </a>
+                    <a href="mailto:your@email.com" class="flex items-center gap-4 p-4 bg-stone border border-stone-mid/50 hover:border-duck/50 transition-colors duration-200 cursor-pointer group">
+                        <div class="w-10 h-10 flex items-center justify-center border border-duck/30 flex-shrink-0" style="background:rgba(251,191,36,0.08);">
+                            <svg class="w-5 h-5 text-duck" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-slate-500 text-xs mb-0.5">Email</div>
+                            <div class="text-slate-300 text-sm group-hover:text-duck transition-colors">jdbeard@proton.me</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <form id="contact-form" class="space-y-4" onsubmit="handleFormSubmit(event)" novalidate>
+                    <div>
+                        <label for="name" class="block section-label mb-2">YOUR NAME / IGN</label>
+                        <input type="text" id="name" name="name" placeholder="YourUsername" required class="mc-input px-4 py-3 text-sm" autocomplete="name">
+                    </div>
+                    <div>
+                        <label for="contact-info" class="block section-label mb-2">EMAIL OR DISCORD</label>
+                        <input type="text" id="contact-info" name="contact-info" placeholder="you@email.com or User#0000" required class="mc-input px-4 py-3 text-sm">
+                    </div>
+                    <div>
+                        <label for="project-type" class="block section-label mb-2">PROJECT TYPE</label>
+                        <select id="project-type" name="project-type" class="mc-input px-4 py-3 text-sm cursor-pointer">
+                            <option value="">Select type…</option>
+                            <option>Custom Plugin (Spigot/Paper)</option>
+                            <option>Fabric / Forge Mod</option>
+                            <option>Full Server setup</option>
+                            <option>Bug Fix / Optimisation</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="message" class="block section-label mb-2">DESCRIBE YOUR PROJECT</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tell me what you want built — the more detail, the better." required class="mc-input px-4 py-3 text-sm resize-none"></textarea>
+                    </div>
+                    <button type="submit" id="submit-btn" class="btn-pixel w-full bg-duck hover:bg-duck-dark text-obsidian font-bold py-3.5 cursor-pointer transition-colors duration-200 flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                        Send Message
+                    </button>
+                    <div id="form-success" class="hidden text-center py-3 text-sm border border-duck/30 text-duck" style="background:rgba(251,191,36,0.08);">
+                        Message sent! I'll get back to you within 24 hours.
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer class="border-t border-stone-mid/30 py-8 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div class="flex items-center gap-3">
+            <svg viewBox="0 0 32 32" width="20" height="20" style="image-rendering:pixelated;" aria-hidden="true">
+                <rect x="6" y="16" width="20" height="13" fill="#FBBF24"/>
+                <rect x="10" y="6" width="16" height="13" fill="#FBBF24"/>
+                <rect x="24" y="11" width="6" height="4" fill="#F97316"/>
+                <rect x="12" y="8" width="3" height="3" fill="#0F172A"/>
+            </svg>
+            <span class="font-pixel text-slate-600" style="font-size:8px;">Duck © 2025</span>
+        </div>
+        <span class="font-pixel text-slate-700" style="font-size:7px;">PRIVATE PLUGINS · BUILT TO ORDER</span>
+        <a href="#home" class="text-slate-500 hover:text-duck transition-colors text-xs cursor-pointer font-medium">↑ Back to top</a>
+    </div>
+</footer>
+
+
+<script>
+    const PHRASES = ['Private Plugin Developer','Custom Game Mode Creator','Paper / Spigot Expert','Java Software Engineer','Server Framework Builder'];
+    let pIdx = 0, cIdx = 0, deleting = false;
+    const typingEl = document.getElementById('typing-display');
+    function tick() {
+        const word = PHRASES[pIdx];
+        typingEl.textContent = deleting ? word.substring(0, --cIdx) : word.substring(0, ++cIdx);
+        let d = deleting ? 45 : 75;
+        if (!deleting && cIdx === word.length)  { d = 1800; deleting = true; }
+        else if (deleting && cIdx === 0)        { deleting = false; pIdx = (pIdx + 1) % PHRASES.length; d = 400; }
+        setTimeout(tick, d);
+    }
+    tick();
+
+    const COLORS = ['#FBBF24','#D97706','#F97316','#334155','#475569','#92400E'];
+    const bc = document.getElementById('blocks-container');
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        function spawnBlock() {
+            const size = Math.random() * 14 + 8, dur = Math.random() * 18 + 12, delay = Math.random() * 3;
+            const el = document.createElement('div');
+            el.className = 'float-block';
+            el.style.cssText = `position:absolute;left:${Math.random()*98}%;bottom:-20px;width:${size}px;height:${size}px;background:${COLORS[Math.floor(Math.random()*COLORS.length)]};opacity:0;animation-duration:${dur}s;animation-delay:${delay}s;image-rendering:pixelated;`;
+            bc.appendChild(el);
+            setTimeout(() => el.remove(), (dur + delay + 1) * 1000);
+        }
+        for (let i = 0; i < 10; i++) setTimeout(spawnBlock, i * 300);
+        setInterval(spawnBlock, 700);
+    }
+
+    const barObs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.style.width = e.target.dataset.w + '%'; barObs.unobserve(e.target); } });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('.bar-fill').forEach(b => barObs.observe(b));
+
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('mobile-nav').classList.toggle('open'));
+    function closeMobileNav() { document.getElementById('mobile-nav').classList.remove('open'); }
+    document.addEventListener('click', e => {
+        const nav = document.getElementById('mobile-nav'), btn = document.getElementById('hamburger');
+        if (nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)) nav.classList.remove('open');
+    });
+
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').style.borderBottomColor = window.scrollY > 40 ? 'rgba(71,85,105,0.5)' : 'rgba(71,85,105,0.3)';
+    }, { passive: true });
+
+    function handleFormSubmit(e) {
+        e.preventDefault();
+        const btn = document.getElementById('submit-btn');
+        btn.disabled = true;
+        btn.innerHTML = `<svg class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg> Sending…`;
+        setTimeout(() => { btn.style.display = 'none'; document.getElementById('form-success').classList.remove('hidden'); }, 1200);
+    }
+
+    // Discord avatar loader
+    // To show a real Discord pfp on a review: right-click the person's avatar in Discord
+    // → "Copy Link" (or "Open Original"), then set data-avatar-url="https://cdn.discordapp.com/avatars/..."
+    // Falls back silently to the initials tile if the URL is missing or the image fails to load.
+    (function loadDiscordAvatars() {
+        document.querySelectorAll('.review-avatar[data-avatar-url]').forEach(el => {
+            const url = el.dataset.avatarUrl;
+            if (!url) return;
+            const img = new Image();
+            img.onload = () => {
+                img.alt = 'Discord avatar';
+                img.width = 36;
+                img.height = 36;
+                img.style.cssText = 'width:36px;height:36px;object-fit:cover;flex-shrink:0;';
+                img.className = 'review-avatar-img';
+                el.replaceWith(img);
+            };
+            img.onerror = () => { /* keep initials */ };
+            img.src = url;
+        });
+    })();
+</script>
 </body>
 </html>
